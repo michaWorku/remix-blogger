@@ -1,10 +1,10 @@
 
-function Post() {
+function PostItems() {
   return (
     <div>
-        <h1>posts</h1>
+        <h1>Posts</h1>
     </div>
   )
 }
 
-export default Post
+export default PostItems
