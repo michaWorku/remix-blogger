@@ -48,7 +48,10 @@ function Layout({children}) {
         <Link to='/' className='logo'>Remix</Link>
         <ul>
           <li>
-          <Link to='/posts' className='nav'>Posts</Link>
+            <Link to='/posts' className='nav'>Posts</Link>
+          </li>
+          <li>
+            <Link to='/auth/login' className='nav'>Login</Link>
           </li>
         </ul>
       </nav>
