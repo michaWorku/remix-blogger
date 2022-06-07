@@ -1,5 +1,6 @@
-import { Link, Links, LiveReload, Meta, Outlet } from "@remix-run/react";
+import { Link, Links, LiveReload, Meta, Outlet, useLoaderData } from "@remix-run/react";
 import globalStylesUrl from './styles/global.css'
+import { getUser } from '~/utils/session.server'
 
 export const links = () =>[{rel: 'stylesheet', href: globalStylesUrl}]
 
@@ -11,6 +12,14 @@ export const meta = ()=>{
     description,
     keywords
   }
+}
+
+export const loader = async ({ request }) => {
+  const user = await getUser(request)
+  const data = {
+    user,
+  }
+  return data
 }
 
 export default function App(){
@@ -42,6 +51,8 @@ function Document({children, title}){
 }
 
 function Layout({children}) {
+  const { user } = useLoaderData()
+
   return(
     <>
       <nav className="navbar">
@@ -50,9 +61,19 @@ function Layout({children}) {
           <li>
             <Link to='/posts' className='nav'>Posts</Link>
           </li>
-          <li>
-            <Link to='/auth/login' className='nav'>Login</Link>
-          </li>
+          {user ? (
+            <li>
+              <form action='/auth/logout' method='POST'>
+                <button type='submit' className='btn'>
+                  Logout {user.username}
+                </button>
+              </form>
+            </li>
+          ) : (
+            <li>
+              <Link to='/auth/login'>Login</Link>
+            </li>
+          )}
         </ul>
       </nav>
       <div className="container">
